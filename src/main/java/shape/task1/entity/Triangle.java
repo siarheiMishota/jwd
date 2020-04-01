@@ -14,6 +14,14 @@ public class Triangle {
         this.pointC = pointC;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Point getPointA() {
         return pointA;
     }

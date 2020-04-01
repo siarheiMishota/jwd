@@ -1,71 +1,63 @@
 package shape.task1.validate;
 
 import shape.task1.entity.Point;
-import shape.task1.exception.TriangleArgumentException;
-import shape.task1.exception.TriangleReadingValidationException;
+import shape.task1.exception.TriangleValidateException;
 
 import static java.lang.Math.abs;
 import static shape.task1.service.TriangleService.side;
 
 public class TriangleValidate {
 
-    public boolean validateParsing(String line) {
+    public void validate(String line) {
 
-        String[] splittingValues = line.split(" ");
+        String[] splittingLine = line.split(" ");
 
-        if (splittingValues.length != 6) {
-            throw new TriangleReadingValidationException("Incorrect length of line.");
-        }
+        validateNumberOfElements(splittingLine);
+
+        Point pointA, pointB, pointC;
 
         try {
+            double pointAX, pointAY, pointBX, pointBY, pointCX, pointCY;
 
-            for (String value : splittingValues) {
+            int positionNumber = 0;
 
-                Double.parseDouble(value);
+            int id = Integer.parseInt(splittingLine[positionNumber++]);
+            pointAX = Double.parseDouble(splittingLine[positionNumber++]);
+            pointAY = Double.parseDouble(splittingLine[positionNumber++]);
+            pointBX = Double.parseDouble(splittingLine[positionNumber++]);
+            pointBY = Double.parseDouble(splittingLine[positionNumber++]);
+            pointCX = Double.parseDouble(splittingLine[positionNumber++]);
+            pointCY = Double.parseDouble(splittingLine[positionNumber++]);
 
-            }
+            pointA = new Point(pointAX, pointAY);
+            pointB = new Point(pointBX, pointBY);
+            pointC = new Point(pointCX, pointCY);
 
         } catch (NumberFormatException e) {
-
-            throw new TriangleReadingValidationException("Incorrect point value.");
+            throw new TriangleValidateException("Incorrect point value.", e);
         }
 
-        return true;
+        validatePointsBelongToSingleLine(pointA, pointB, pointC);
 
     }
 
-    public boolean validateValues(Point pointA, Point pointB, Point pointC) {
-
-
-        if (isLine(pointA, pointB, pointC)) {
-            throw new TriangleArgumentException("Point belong to straight line.");
+    private void validateNumberOfElements(String[] splittingValues) {
+        int numberOfValues = 7;
+        if (splittingValues.length != numberOfValues) {
+            throw new TriangleValidateException("Incorrect length of line.");
         }
-
-        if (!isSumLessOfSidesMoreThenBiggestSide(pointA, pointB, pointC)) {
-            throw new TriangleArgumentException("The sum of the two smaller sides of the triangle is less then the third side.");
-        }
-
-        return true;
-
-
     }
 
-    private boolean isSumLessOfSidesMoreThenBiggestSide(Point pointA, Point pointB, Point pointC) {
 
-        double sideA = side(pointA, pointB);
-        double sideB = side(pointB, pointC);
-        double sideC = side(pointC, pointA);
 
-        return sideA + sideB > sideC &&
-                sideB + sideC > sideA &&
-                sideA + sideC > sideB;
 
-    }
-
-    private boolean isLine(Point topA, Point topB, Point topC) {
+    private void validatePointsBelongToSingleLine(Point topA, Point topB, Point topC) {
         double accuracy = 0.0000001;
 
-        return abs((topC.getY() - topA.getY()) * (topB.getX() - topA.getX()) - (topB.getY() - topA.getY()) * (topC.getX() - topA.getX())) <= accuracy;
+        if (abs((topC.getY() - topA.getY()) * (topB.getX() - topA.getX()) - (topB.getY() - topA.getY()) * (topC.getX() - topA.getX())) <= accuracy) {
+            throw new TriangleValidateException("All point belong to single line");
+        }
+
     }
 
 

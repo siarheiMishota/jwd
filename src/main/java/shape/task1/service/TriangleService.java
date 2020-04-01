@@ -20,6 +20,7 @@ public class TriangleService {
         }
 
         this.triangle = triangle;
+        calculateSides();
     }
 
     private void calculateSides() {
@@ -31,9 +32,11 @@ public class TriangleService {
     }
 
     public double area() {
-        return sqrt(halfPerimeter() * (halfPerimeter() - sideA) *
+        double area=sqrt(halfPerimeter() * (halfPerimeter() - sideA) *
                 (halfPerimeter() - sideB) *
                 (halfPerimeter() - sideC));
+
+        return area;
     }
 
     private double halfPerimeter() {
