@@ -1,25 +1,32 @@
 package by.shape.task1.entity;
 
-public class Triangle {
+import java.util.Objects;
 
-    private int id;
+public class Triangle implements TriangleObservable {
+
+    private static long generateID = 0;
+
+    private long id;
     private Point pointA;
     private Point pointB;
     private Point pointC;
+    private TriangleObserver observer;
 
-    public Triangle(int id, Point pointA, Point pointB, Point pointC) {
-        this.id = id;
+    private Triangle(Point pointA, Point pointB, Point pointC) {
+        this.id = generateID++;
         this.pointA = pointA;
         this.pointB = pointB;
         this.pointC = pointC;
     }
 
-    public int getId() {
-        return id;
+    public static Triangle createByPoints(Point pointA, Point pointB, Point pointC) {
+
+        return new Triangle(pointA, pointB, pointC);
+
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public long getId() {
+        return id;
     }
 
     public Point getPointA() {
@@ -28,6 +35,7 @@ public class Triangle {
 
     public void setPointA(Point pointA) {
         this.pointA = pointA;
+        notifyObserver();
     }
 
     public Point getPointB() {
@@ -36,6 +44,7 @@ public class Triangle {
 
     public void setPointB(Point pointB) {
         this.pointB = pointB;
+        notifyObserver();
     }
 
     public Point getPointC() {
@@ -44,6 +53,7 @@ public class Triangle {
 
     public void setPointC(Point pointC) {
         this.pointC = pointC;
+        notifyObserver();
     }
 
     @Override
@@ -51,9 +61,10 @@ public class Triangle {
         if (this == o) return true;
         if (!(o instanceof Triangle)) return false;
         Triangle triangle = (Triangle) o;
-        return pointA.equals(triangle.pointA) &&
-                pointB.equals(triangle.pointB) &&
-                pointC.equals(triangle.pointC);
+        return Objects.equals(pointA, triangle.pointA) &&
+                Objects.equals(pointB, triangle.pointB) &&
+                Objects.equals(pointC, triangle.pointC) &&
+                Objects.equals(observer, triangle.observer);
     }
 
     @Override
@@ -61,7 +72,7 @@ public class Triangle {
 
         final int prime = 31;
         int result = 1;
-        result = prime * result + Integer.hashCode(id);
+        result = prime * result + Long.hashCode(id);
         result = prime * result + pointA.hashCode();
         result = prime * result + pointB.hashCode();
         result = prime * result + pointC.hashCode();
@@ -70,6 +81,7 @@ public class Triangle {
 
     }
 
+
     @Override
     public String toString() {
         return String.format("%6d  A(%.2f; %.2f), B(%.2f; %.2f), C(%.2f; %.2f)", id,
@@ -77,4 +89,22 @@ public class Triangle {
     }
 
 
+    @Override
+    public void attach(TriangleObserver observer) {
+        this.observer = observer;
+    }
+
+    @Override
+    public void detach(TriangleObserver observer) {
+        observer = null;
+    }
+
+    @Override
+    public void notifyObserver() {
+
+        if (observer != null) {
+            observer.triangleUpdate(this);
+        }
+
+    }
 }

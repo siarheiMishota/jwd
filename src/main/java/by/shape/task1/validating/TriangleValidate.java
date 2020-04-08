@@ -10,18 +10,9 @@ import static java.lang.Math.abs;
 
 public class TriangleValidate {
 
-    final static String patternCorrectValues = "\\s*\\d+\\s+((\\d+\\.?\\d*)\\s+){5}(\\d+\\.?\\d*)\\s*";
+    final static String patternCorrectValues = "\\s*((-?\\d+\\.?\\d*)\\s+){5}(-?\\d+\\.?\\d*)\\s*";
 
-    final static Logger logger= LogManager.getLogger();
-
-
-    public static void main(String[] args) {
-
-    logger.error("asdfgh");
-
-    }
-
-
+    final static Logger logger = LogManager.getLogger();
 
 
     public boolean validateLine(String line) {
@@ -30,22 +21,10 @@ public class TriangleValidate {
             return true;
         }
 
-//           Logger _______________________________________________________________________________________________________________________________________
+        logger.warn("Line isn't correct: " + line);
 
         return false;
 
-    }
-
-
-    public boolean validateNumberOfElements(String[] splittingValues) {
-        int numberOfValues = 7;
-        if (splittingValues.length == numberOfValues) {
-            return true;
-        }
-
-//           Logger _______________________________________________________________________________________________________________________________________
-
-        return false;
     }
 
 
@@ -56,7 +35,8 @@ public class TriangleValidate {
             return true;
         }
 
-//           Logger _______________________________________________________________________________________________________________________________________
+        logger.warn("All point belong to single line: " + topA + topB + topC);
+
         return false;
     }
 

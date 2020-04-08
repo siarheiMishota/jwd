@@ -1,29 +1,59 @@
-package by.shape.task1.service;
+package by.shape.task1.action;
 
 import by.shape.task1.entity.Point;
 import by.shape.task1.entity.Triangle;
+import by.shape.task1.entity.TriangleObserver;
 import by.shape.task1.exception.TriangleNullPointerException;
 
 import static java.lang.Math.*;
 
-public class TriangleService {
+public class TriangleAction implements TriangleObserver {
 
     private double accuracy = 0.0000001;
 
-    private Triangle triangle;
     private double sideA, sideB, sideC;
+    private double area, perimeter;
+    private boolean isRight, isIsosceles, isEquilateral, isAcuteAngle, isObtuseAngle;
 
-    public TriangleService(Triangle triangle) {
+    public TriangleAction(Triangle triangle) {
 
         if (triangle == null) {
             throw new TriangleNullPointerException("Triangle doesn't exist");
         }
 
-        this.triangle = triangle;
-        calculateSides();
+        triangleUpdate(triangle);
+
     }
 
-    private void calculateSides() {
+    public double getArea() {
+        return area;
+    }
+
+    public double getPerimeter() {
+        return perimeter;
+    }
+
+    public boolean isRight() {
+        return isRight;
+    }
+
+    public boolean isIsosceles() {
+        return isIsosceles;
+    }
+
+    public boolean isEquilateral() {
+        return isEquilateral;
+    }
+
+    public boolean isAcuteAngle() {
+        return isAcuteAngle;
+    }
+
+    public boolean isObtuseAngle() {
+        return isObtuseAngle;
+    }
+
+    private void calculateSides(Triangle triangle) {
 
         sideA = side(triangle.getPointA(), triangle.getPointB());
         sideB = side(triangle.getPointB(), triangle.getPointC());
@@ -31,23 +61,23 @@ public class TriangleService {
 
     }
 
-    public double area() {
-        double area=sqrt(halfPerimeter() * (halfPerimeter() - sideA) *
-                (halfPerimeter() - sideB) *
-                (halfPerimeter() - sideC));
+    private double calculateArea(Triangle triangle) {
+        double area = sqrt(halfPerimeter(triangle) * (halfPerimeter(triangle) - sideA) *
+                (halfPerimeter(triangle) - sideB) *
+                (halfPerimeter(triangle) - sideC));
 
         return area;
     }
 
-    private double halfPerimeter() {
-        return perimeter() / 2;
+    private double halfPerimeter(Triangle triangle) {
+        return calculatePerimeter(triangle) / 2;
     }
 
-    public double perimeter() {
+    private double calculatePerimeter(Triangle triangle) {
         return sideA + sideB + sideC;
     }
 
-    public boolean isRight() {
+    private boolean calculateRight(Triangle triangle) {
 
         double hypotenuse = Double.max(Double.max(sideA, sideB), sideC);
         double legOne, legTwo;
@@ -69,7 +99,7 @@ public class TriangleService {
 
     }
 
-    public boolean isIsosceles() {
+    private boolean calculateIsosceles(Triangle triangle) {
 
         boolean isIsosceles = false;
 
@@ -84,13 +114,13 @@ public class TriangleService {
         return isIsosceles;
     }
 
-    public boolean isEquilateral() {
+    private boolean calculateEquilateral(Triangle triangle) {
 
         return abs(sideA - sideC) <= accuracy && abs(sideB - sideC) <= accuracy;
 
     }
 
-    public boolean isAcuteAngle() {
+    private boolean calculateAcuteAngle(Triangle triangle) {
 
         double rightAngle = 90;
 
@@ -103,7 +133,7 @@ public class TriangleService {
 
     }
 
-    public boolean isObtuseAngle() {
+    private boolean calculateObtuseAngle(Triangle triangle) {
 
         double rightAngle = 90;
         boolean isObtuse = false;
@@ -129,9 +159,6 @@ public class TriangleService {
         return sqrt(pow((point1.getX() - point2.getX()), 2) + pow((point1.getY() - point2.getY()), 2));
     }
 
-
-
-
     private static double angleInDegreesBetweenTwoSides(double lengthOfAdjacentSideOne, double lengthOfAdjacentSideTwo, double lengthOfOppositeSide) {
 
         double angleInDegrees = toDegrees(acos((pow(lengthOfAdjacentSideOne, 2) + pow(lengthOfAdjacentSideTwo, 2) - pow(lengthOfOppositeSide, 2)) / (2 * lengthOfAdjacentSideOne * lengthOfAdjacentSideTwo)));
@@ -141,4 +168,15 @@ public class TriangleService {
     }
 
 
+    @Override
+    public void triangleUpdate(Triangle triangle) {
+        calculateSides(triangle);
+        area = calculateArea(triangle);
+        perimeter = calculatePerimeter(triangle);
+        isRight = calculateRight(triangle);
+        isIsosceles = calculateIsosceles(triangle);
+        isEquilateral = calculateEquilateral(triangle);
+        isAcuteAngle = calculateAcuteAngle(triangle);
+        isObtuseAngle = calculateObtuseAngle(triangle);
+    }
 }
