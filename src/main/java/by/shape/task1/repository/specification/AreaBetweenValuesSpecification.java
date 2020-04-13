@@ -4,28 +4,31 @@ import by.shape.task1.action.TriangleAction;
 import by.shape.task1.action.Warehouse;
 import by.shape.task1.entity.Triangle;
 
+import java.util.Optional;
+
 public class AreaBetweenValuesSpecification implements Specification {
 
     private double startingValue, endingValue;
 
-    public AreaBetweenValuesSpecification(double startingValue, double endingValue) {
+    public AreaBetweenValuesSpecification(double startingValue, double endingValueInclude) {
         this.startingValue = startingValue;
-        this.endingValue = endingValue;
+        this.endingValue = endingValueInclude;
     }
 
     @Override
     public boolean test(Triangle triangle) {
+        double accuracy = 0.0000001;
 
         Warehouse warehouse = Warehouse.getInstance();
 
-        TriangleAction action = warehouse.getById(triangle.getId());
+        Optional<TriangleAction> action = warehouse.getById(triangle.getId());
 
-        if (action == null) {
-            return false;
+        if (action.isPresent()) {
+            double triangleArea = action.get().getArea();
+
+            return triangleArea - startingValue >= -accuracy && endingValue - triangleArea >= -accuracy;
         }
 
-        double triangleArea = action.getArea();
-
-        return startingValue <= triangleArea && triangleArea < endingValue;
+        return false;
     }
 }

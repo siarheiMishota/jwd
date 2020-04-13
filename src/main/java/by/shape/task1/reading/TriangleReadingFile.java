@@ -43,7 +43,7 @@ public class TriangleReadingFile implements TriangleReading {
         return triangles;
     }
 
-    private List<String> getLines() throws ReadingException {
+    public List<String> getLines() throws ReadingException {
         List<String> lines;
 
         try {
@@ -51,12 +51,12 @@ public class TriangleReadingFile implements TriangleReading {
 
         } catch (IOException e) {
 
-            logger.error("File isn't find for reading: " + path);
             throw new ReadingException("File doesn't exist", e);
         }
 
         return lines;
 
     }
+
 
 }

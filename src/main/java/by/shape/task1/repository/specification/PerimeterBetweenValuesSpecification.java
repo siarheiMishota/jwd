@@ -4,6 +4,8 @@ import by.shape.task1.action.TriangleAction;
 import by.shape.task1.action.Warehouse;
 import by.shape.task1.entity.Triangle;
 
+import java.util.Optional;
+
 public class PerimeterBetweenValuesSpecification implements Specification {
 
     private double startingValue, endingValue;
@@ -18,14 +20,15 @@ public class PerimeterBetweenValuesSpecification implements Specification {
 
         Warehouse warehouse = Warehouse.getInstance();
 
-        TriangleAction action = warehouse.getById(triangle.getId());
+        Optional<TriangleAction> action = warehouse.getById(triangle.getId());
 
-        if (action == null) {
-            return false;
+        if (action.isPresent()) {
+
+            double trianglePerimeter = action.get().getPerimeter();
+
+            return startingValue <= trianglePerimeter && trianglePerimeter < endingValue;
         }
 
-        double trianglePerimeter = action.getPerimeter();
-
-        return startingValue <= trianglePerimeter && trianglePerimeter < endingValue;
+        return false;
     }
 }

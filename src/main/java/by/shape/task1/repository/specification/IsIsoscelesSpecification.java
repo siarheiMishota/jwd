@@ -4,25 +4,22 @@ import by.shape.task1.action.TriangleAction;
 import by.shape.task1.action.Warehouse;
 import by.shape.task1.entity.Triangle;
 
+import java.util.Optional;
+
 public class IsIsoscelesSpecification implements Specification {
-
-    private double number;
-
-    public IsIsoscelesSpecification(double startValue) {
-        this.number = startValue;
-    }
 
     @Override
     public boolean test(Triangle triangle) {
 
         Warehouse warehouse = Warehouse.getInstance();
 
-        TriangleAction action = warehouse.getById(triangle.getId());
+        Optional<TriangleAction> action = warehouse.getById(triangle.getId());
 
-        if (action==null){
-            return false;
+        if (action.isPresent()) {
+            return action.get().isIsosceles();
         }
 
-        return action.isIsosceles();
+        return false;
     }
+
 }

@@ -44,7 +44,7 @@ public class TriangleParser {
 
         } else {
 
-            logger.warn(line+":  the line was not recognized");
+            logger.warn(line+":  the line was not recognized.");
         }
 
         return null;

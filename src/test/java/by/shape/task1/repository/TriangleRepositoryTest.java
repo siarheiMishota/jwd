@@ -1,5 +1,6 @@
 package by.shape.task1.repository;
 
+import by.shape.task1.action.TriangleAction;
 import by.shape.task1.entity.Point;
 import by.shape.task1.entity.Triangle;
 import by.shape.task1.exception.TriangleRepositoryException;
@@ -16,27 +17,22 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import static org.testng.Assert.assertEquals;
 
 public class TriangleRepositoryTest {
 
 
-    Path path = Path.of("src/main/resources/triangles.txt");
+    Path path = Path.of("src/test/java/resources/test.txt");
     static Logger logger = LogManager.getLogger();
 
     TriangleReading triangleReading = new TriangleReadingFile(path);
     TriangleRepository repository;
 
     @BeforeMethod
-    public void setUp() {
-        try {
-            repository = TriangleRepository.getInstance(triangleReading);
-        } catch (TriangleRepositoryException e) {
-
-            logger.error("Error in repository test for expected");
-
-        }
+    public void setUp() throws TriangleRepositoryException {
+        repository = TriangleRepository.getInstance(triangleReading);
 
 
     }
@@ -50,24 +46,37 @@ public class TriangleRepositoryTest {
 
         assertEquals(repository, expectedRepository);
 
-    }
-
-    @Test
-    public void testGetInstanceSecond() {
-        try {
-            TriangleRepository expectedRepository = TriangleRepository.getInstance(triangleReading);
-
-            assertEquals(repository, expectedRepository);
-
-
-        } catch (TriangleRepositoryException e) {
-            logger.error("Triangle repository exception");
-        }
 
     }
 
     @Test
-    public void testAdd() {
+    public void testGetInstanceSecond() throws TriangleRepositoryException {
+
+        TriangleRepository expectedRepository = TriangleRepository.getInstance(triangleReading);
+
+        assertEquals(repository, expectedRepository);
+
+
+    }
+
+    @Test(expectedExceptions = TriangleRepositoryException.class)
+    public void testGetInstanceThrowException() throws TriangleRepositoryException, NoSuchFieldException, IllegalAccessException {
+
+        Field fieldRepository = TriangleRepository.class.getDeclaredField("triangleRepository");
+        fieldRepository.setAccessible(true);
+        fieldRepository.set(TriangleRepository.class, null);
+
+        TriangleReading readingWithException = new TriangleReadingFile(Path.of("throwException.txt"));
+
+        TriangleRepository.getInstance(readingWithException);
+
+        fieldRepository.set(TriangleRepository.class, null);
+
+
+    }
+
+    @Test
+    public void testAdd() throws NoSuchFieldException, IllegalAccessException {
 
         Triangle addingTriangle = Triangle.createByPoints(new Point(10, 30), new Point(40, 90), new Point(63, 192));
         repository.add(addingTriangle);
@@ -77,25 +86,21 @@ public class TriangleRepositoryTest {
         List<Triangle> queryTriangle = repository.query(idSpecification);
         assertEquals(addingTriangle, queryTriangle.get(0));
 
-        try {
-            Field fieldRepository = TriangleRepository.class.getDeclaredField("triangleRepository");
-            fieldRepository.setAccessible(true);
-            fieldRepository.set(TriangleRepository.class, null);
+        Field fieldRepository = TriangleRepository.class.getDeclaredField("triangleRepository");
+        fieldRepository.setAccessible(true);
+        fieldRepository.set(TriangleRepository.class, null);
 
-            Field fieldIdTriangle = Triangle.class.getDeclaredField("generateID");
-            fieldIdTriangle.setAccessible(true);
-            fieldIdTriangle.setInt(TriangleRepository.class, 0);
+        Field fieldIdTriangle = Triangle.class.getDeclaredField("generateID");
+        fieldIdTriangle.setAccessible(true);
+        fieldIdTriangle.setInt(TriangleRepository.class, 0);
 
-            System.out.println();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        System.out.println();
 
 
     }
 
     @Test
-    public void testRemove() {
+    public void testRemove() throws NoSuchFieldException, IllegalAccessException {
 
         Triangle removingTriangle = Triangle.createByPoints(new Point(-2, 4), new Point(-1, 7), new Point(3, 1));
 
@@ -108,33 +113,37 @@ public class TriangleRepositoryTest {
         int actualSize = 9;
         assertEquals(actualSize, queryTriangles.size());
 
-        try {
-            Field fieldRepository = TriangleRepository.class.getDeclaredField("triangleRepository");
-            fieldRepository.setAccessible(true);
-            fieldRepository.set(TriangleRepository.class, null);
+        Field fieldRepository = TriangleRepository.class.getDeclaredField("triangleRepository");
+        fieldRepository.setAccessible(true);
+        fieldRepository.set(TriangleRepository.class, null);
 
-            Field fieldIdTriangle = Triangle.class.getDeclaredField("generateID");
-            fieldIdTriangle.setAccessible(true);
-            fieldIdTriangle.setInt(TriangleRepository.class, 0);
+        Field fieldIdTriangle = Triangle.class.getDeclaredField("generateID");
+        fieldIdTriangle.setAccessible(true);
+        fieldIdTriangle.setInt(TriangleRepository.class, 0);
 
-            System.out.println();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        System.out.println();
 
     }
 
-    @Test
-    public void testQueryIdSpecification() {
 
-        Triangle triangle = Triangle.createByPoints(new Point(-2, 4), new Point(-1, 7), new Point(3, 1));
+    @Test(priority = 1)
+    public void testGetById() {
 
-        Specification idSpecification = new IdSpecification(9);
-        List<Triangle> queryTriangle = repository.query(idSpecification);
-        assertEquals(triangle, queryTriangle.get(0));
-
+        Triangle actualTriangle = Triangle.createByPoints(new Point(-2, 4), new Point(-1, 7), new Point(3, 1));
+        Triangle expectedTriangle = repository.getById(9).get();
+        assertEquals(actualTriangle, expectedTriangle);
 
     }
 
+    @Test(priority = 1)
+    public void testGetActionById() {
+
+        Triangle actualTriangle = Triangle.createByPoints(new Point(-2, 4), new Point(-1, 7), new Point(3, 1));
+        TriangleAction actualAction = new TriangleAction(actualTriangle);
+
+        Optional<TriangleAction> expectedAction = repository.getActionById(9);
+        assertEquals(actualAction, expectedAction.get());
+
+    }
 
 }

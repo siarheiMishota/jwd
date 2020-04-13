@@ -3,7 +3,8 @@ package by.shape.task1.action;
 import by.shape.task1.entity.Point;
 import by.shape.task1.entity.Triangle;
 import by.shape.task1.entity.TriangleObserver;
-import by.shape.task1.exception.TriangleNullPointerException;
+
+import java.util.Objects;
 
 import static java.lang.Math.*;
 
@@ -17,9 +18,6 @@ public class TriangleAction implements TriangleObserver {
 
     public TriangleAction(Triangle triangle) {
 
-        if (triangle == null) {
-            throw new TriangleNullPointerException("Triangle doesn't exist");
-        }
 
         triangleUpdate(triangle);
 
@@ -178,5 +176,28 @@ public class TriangleAction implements TriangleObserver {
         isEquilateral = calculateEquilateral(triangle);
         isAcuteAngle = calculateAcuteAngle(triangle);
         isObtuseAngle = calculateObtuseAngle(triangle);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TriangleAction)) return false;
+        TriangleAction action = (TriangleAction) o;
+        return Double.compare(action.accuracy, accuracy) == 0 &&
+                Double.compare(action.sideA, sideA) == 0 &&
+                Double.compare(action.sideB, sideB) == 0 &&
+                Double.compare(action.sideC, sideC) == 0 &&
+                Double.compare(action.area, area) == 0 &&
+                Double.compare(action.perimeter, perimeter) == 0 &&
+                isRight == action.isRight &&
+                isIsosceles == action.isIsosceles &&
+                isEquilateral == action.isEquilateral &&
+                isAcuteAngle == action.isAcuteAngle &&
+                isObtuseAngle == action.isObtuseAngle;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accuracy, sideA, sideB, sideC, area, perimeter, isRight, isIsosceles, isEquilateral, isAcuteAngle, isObtuseAngle);
     }
 }

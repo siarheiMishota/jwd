@@ -6,8 +6,7 @@ import by.shape.task1.entity.Triangle;
 
 import java.util.Optional;
 
-public class IsEquilateralSpecification implements Specification {
-
+public class IsAcuteSpecification implements Specification {
 
     @Override
     public boolean test(Triangle triangle) {
@@ -16,8 +15,10 @@ public class IsEquilateralSpecification implements Specification {
 
         Optional<TriangleAction> action = warehouse.getById(triangle.getId());
 
+
         if (action.isPresent()) {
-            return action.get().isEquilateral();
+
+            return action.get().isAcuteAngle();
         }
 
         return false;

@@ -4,6 +4,8 @@ import by.shape.task1.action.TriangleAction;
 import by.shape.task1.action.Warehouse;
 import by.shape.task1.entity.Triangle;
 
+import java.util.Optional;
+
 public class AreaLessNumberSpecification implements Specification {
 
     private double number;
@@ -15,15 +17,17 @@ public class AreaLessNumberSpecification implements Specification {
     @Override
     public boolean test(Triangle triangle) {
 
+        double accuracy = 0.0000001;
         Warehouse warehouse = Warehouse.getInstance();
 
-        TriangleAction action = warehouse.getById(triangle.getId());
+        Optional<TriangleAction> action = warehouse.getById(triangle.getId());
 
-        if (action==null){
-            return false;
+        if (action.isPresent()) {
+            double triangleArea = action.get().getArea();
+
+            return number - triangleArea > -accuracy;
         }
-        double triangleArea = action.getArea();
 
-        return number > triangleArea;
+        return false;
     }
 }

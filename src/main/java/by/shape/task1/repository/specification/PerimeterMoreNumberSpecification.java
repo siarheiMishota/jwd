@@ -4,6 +4,8 @@ import by.shape.task1.action.TriangleAction;
 import by.shape.task1.action.Warehouse;
 import by.shape.task1.entity.Triangle;
 
+import java.util.Optional;
+
 public class PerimeterMoreNumberSpecification implements Specification {
 
     private double number;
@@ -17,13 +19,14 @@ public class PerimeterMoreNumberSpecification implements Specification {
 
         Warehouse warehouse = Warehouse.getInstance();
 
-        TriangleAction action = warehouse.getById(triangle.getId());
+        Optional<TriangleAction> action = warehouse.getById(triangle.getId());
 
-        if (action==null){
-            return false;
+        if (action.isPresent()) {
+            double trianglePerimeter = action.get().getPerimeter();
+
+            return number <= trianglePerimeter;
         }
-        double trianglePerimeter = action.getPerimeter();
 
-        return number <= trianglePerimeter;
+        return false;
     }
 }

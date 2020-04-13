@@ -6,21 +6,17 @@ import by.shape.task1.entity.Triangle;
 import by.shape.task1.exception.ReadingException;
 import by.shape.task1.exception.TriangleRepositoryException;
 import by.shape.task1.reading.TriangleReading;
-import by.shape.task1.reading.TriangleReadingFile;
 import by.shape.task1.repository.specification.Specification;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Field;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TriangleRepository {
-
-    static Logger logger = LogManager.getLogger();
 
     private static TriangleRepository triangleRepository;
     private List<Triangle> triangles = new ArrayList<>();
@@ -46,17 +42,8 @@ public class TriangleRepository {
             List<Triangle> readingTriangles = triangleReading.getTriangles();
             triangles.addAll(readingTriangles);
 
-            for (Triangle triangle : triangles) {
-
-                TriangleAction action = new TriangleAction(triangle);
-                warehouse.add(triangle.getId(), action);
-
-            }
-
-
         } catch (ReadingException e) {
 
-            logger.error("Triangle reading isn't correct");
             throw new TriangleRepositoryException("Triangle reading isn't correct", e);
         }
     }
@@ -79,6 +66,22 @@ public class TriangleRepository {
     public List<Triangle> query(Specification specification) {
 
         return triangles.stream().filter(specification).collect(Collectors.toList());
+
+    }
+
+    public Optional<Triangle> getById(int id) {
+
+        if (id >= 0 && id < triangles.size()) {
+            return Optional.of(triangles.get(id));
+        }
+
+        return Optional.empty();
+
+    }
+
+    public Optional<TriangleAction> getActionById(int id) {
+
+        return warehouse.getById(id);
 
     }
 

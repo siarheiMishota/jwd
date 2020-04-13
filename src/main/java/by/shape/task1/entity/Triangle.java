@@ -1,5 +1,8 @@
 package by.shape.task1.entity;
 
+import by.shape.task1.action.TriangleAction;
+import by.shape.task1.action.Warehouse;
+
 import java.util.Objects;
 
 public class Triangle implements TriangleObservable {
@@ -11,15 +14,20 @@ public class Triangle implements TriangleObservable {
     private Point pointB;
     private Point pointC;
     private TriangleObserver observer;
+    private Warehouse warehouse = Warehouse.getInstance();
 
     private Triangle(Point pointA, Point pointB, Point pointC) {
         this.id = generateID++;
         this.pointA = pointA;
         this.pointB = pointB;
         this.pointC = pointC;
+
+        TriangleAction action = new TriangleAction(this);
+        warehouse.add(id, action);
     }
 
     public static Triangle createByPoints(Point pointA, Point pointB, Point pointC) {
+
 
         return new Triangle(pointA, pointB, pointC);
 
@@ -96,7 +104,7 @@ public class Triangle implements TriangleObservable {
 
     @Override
     public void detach(TriangleObserver observer) {
-        observer = null;
+        this.observer = null;
     }
 
     @Override
