@@ -16,7 +16,7 @@ public class TextReadingFile implements TextReading {
 
     @Override
     public String get() throws ReadingException {
-        String text = null;
+        String text;
 
         try {
             text = Files.readString(path);

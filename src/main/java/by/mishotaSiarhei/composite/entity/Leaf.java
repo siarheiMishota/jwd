@@ -1,14 +1,18 @@
 package by.mishotaSiarhei.composite.entity;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class Leaf implements Component {
 
-    String content;
+    private String content;
+    private Type type;
 
-    public Leaf(String content) {
+
+    public Leaf(String content, Type type) {
         this.content = content;
+        this.type=type;
     }
 
     @Override
@@ -18,12 +22,10 @@ public class Leaf implements Component {
 
     }
 
+
     @Override
-    public void operation() {
-
-        throw new UnsupportedOperationException("Cannot be parsed to leaf");
-
-
+    public List<Component> getComponents() {
+        return null;
     }
 
     @Override
@@ -36,6 +38,11 @@ public class Leaf implements Component {
 
         throw new UnsupportedOperationException("Cannot be removed to leaf");
 
+    }
+
+    @Override
+    public Type getType() {
+        return type;
     }
 
     @Override
