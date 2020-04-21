@@ -1,6 +1,6 @@
 package by.mishotaSiarhei.composite.exception;
 
-public class ReadingException extends Exception{
+public class ReadingException extends Exception {
 
     public ReadingException() {
     }

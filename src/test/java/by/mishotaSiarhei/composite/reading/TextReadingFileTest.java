@@ -22,7 +22,7 @@ public class TextReadingFileTest {
         Path pathToTestFile = Path.of("src/test/java/resources/parsingText.txt");
         textReading = new TextReadingFile(pathToTestFile);
 
-        int actualNumber = 2567;
+        int actualNumber = 2575;
         String line = textReading.get();
 
         assertEquals(actualNumber, line.length());

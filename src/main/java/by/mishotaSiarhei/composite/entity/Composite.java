@@ -20,15 +20,12 @@ public class Composite implements Component {
         if (index >= 0 && index < components.size()) {
             return Optional.of(components.get(index));
         }
-
         return Optional.empty();
     }
 
     @Override
     public void add(Component component) {
-
         components.add(component);
-
     }
 
 
@@ -37,7 +34,6 @@ public class Composite implements Component {
     public void remove(Component component) {
 
         components.remove(component);
-
     }
 
     @Override
