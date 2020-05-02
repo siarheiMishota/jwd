@@ -1,4 +1,4 @@
-package by.mishotaSiarhei.composite.exception;
+package by.mishota.composite.exception;
 
 public class ReadingException extends Exception {
 
