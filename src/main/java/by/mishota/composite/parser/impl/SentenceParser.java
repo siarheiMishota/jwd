@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class SentenceParser implements Parser {
 
-    private static String patternOnSentences = "[\\.]{3}\\s|[\\.!?]\\s?";
+    private static final String PATTERN_ON_SENTENCES = "[\\.]{3}\\s|[\\.!?]\\s?";
     private static SentenceParser instance = new SentenceParser();
     public static Parser getInstance() {
         return instance;
@@ -25,7 +25,7 @@ public class SentenceParser implements Parser {
         TextComponent textComponentParagraph = new Lexeme(LexemeType.PARAGRAPH);
         List<String> sentences = new ArrayList<>();
 
-        Pattern patternSentence = Pattern.compile(patternOnSentences);
+        Pattern patternSentence = Pattern.compile(PATTERN_ON_SENTENCES);
         Matcher matcherSentence = patternSentence.matcher(value);
         int indexStartingOfSentence = 0, indexEndingOfSentence;
 

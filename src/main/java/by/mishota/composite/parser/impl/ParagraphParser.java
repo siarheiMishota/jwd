@@ -7,8 +7,8 @@ import by.mishota.composite.parser.Parser;
 
 public class ParagraphParser implements Parser {
 
+    private static final String PATTER_ON_PARAGRAPHS = "\n\\s{4}";
     private static ParagraphParser instance = new ParagraphParser();
-    private static String patterOnParagraphs = "\n\\s{4}";
 
     private Parser parserOnSentence = SentenceParser.getInstance();
 
@@ -19,7 +19,7 @@ public class ParagraphParser implements Parser {
     @Override
     public TextComponent parse(String value) {
         TextComponent textComponentSentences = new Lexeme(LexemeType.TEXT);
-        String[] paragraphs = value.split(patterOnParagraphs);
+        String[] paragraphs = value.split(PATTER_ON_PARAGRAPHS);
 
         for (String paragraph : paragraphs) {
             TextComponent textComponentSentence = parserOnSentence.parse(paragraph);

@@ -9,6 +9,7 @@ public class Lexeme implements TextComponent {
 
     private static final String INDENT_FOR_PARAGRAPH ="\n\t";
     private static final String INDENT_FOR_WORD =" ";
+
     private List<TextComponent> textComponents = new ArrayList<>();
     private LexemeType lexemeType;
 
