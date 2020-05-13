@@ -1,7 +1,6 @@
 package by.mishota.multithreading.entity;
 
-import by.mishota.multithreading.action.LogisticBase;
-import by.mishota.multithreading.util.CargoUtil;
+import by.mishota.multithreading.util.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,16 +8,14 @@ public class Cargo implements Runnable {
 
     private int id;
     private TypeCargo type;
-    private boolean isQuicklyPerishable;
-    private LogisticBase logisticBase;
+    private boolean perishable;
 
-    private static Logger logger= LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger();
 
-    public Cargo(TypeCargo type, boolean isQuicklyPerishable, LogisticBase logisticBase) {
+    public Cargo(TypeCargo type, boolean perishable) {
         this.type = type;
-        this.isQuicklyPerishable = isQuicklyPerishable;
-        this.logisticBase = logisticBase;
-        id = CargoUtil.getGenerateId();
+        this.perishable = perishable;
+        id = Util.getGenerateCargoID();
     }
 
     public int getId() {
@@ -29,18 +26,28 @@ public class Cargo implements Runnable {
         return type;
     }
 
-    public boolean isQuicklyPerishable() {
-        return isQuicklyPerishable;
+    public boolean isPerishable() {
+        return perishable;
     }
 
     @Override
     public void run() {
+        Base base=Base.getInstance();
+        Terminal terminal;
+
         try {
-            logisticBase.getTerritory().put(this);
-            logger.info(String.format("The Car(%5d,%10s) was putted to the territory\n",id,type.toString()));
-            System.out.println(String.format("The Car(%5d,%10s,%6b) was putted to the territory\n",id,type.toString(),isQuicklyPerishable));
+            logger.info(String.format("Cargo (%4d) waiting for terminal"));
+            terminal=base.getTerminal(this);
+
+            logger.info(String.format("Cargo (%4d) got a terminal"));
+
+            terminal.load(this);
+
+            logger.info(String.format("Cargo (%4d) got a terminal"));
+
+
         } catch (InterruptedException e) {
-            logger.warn(String.format("Putting the Car(%5d,%10s) to the territory was interrupted - %s",id,type.toString(),e.toString()));
+            logger.warn("Exception ");
         }
     }
 }

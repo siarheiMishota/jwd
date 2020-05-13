@@ -2,7 +2,7 @@ package by.mishota.composite.parser;
 
 import by.mishota.composite.entity.*;
 import by.mishota.composite.parser.impl.ParagraphParser;
-import by.mishotaa.composite.entity.*;
+import by.mishota.composite.entity.*;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

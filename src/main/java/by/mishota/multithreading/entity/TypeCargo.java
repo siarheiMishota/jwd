@@ -4,7 +4,8 @@ public enum TypeCargo {
 
     LORRY(5,10),VAN(2,3);
 
-    int takesSpace, capacity;
+    private int takesSpace;
+    private int capacity;
 
     TypeCargo(int takesSpace, int capacity) {
         this.takesSpace = takesSpace;

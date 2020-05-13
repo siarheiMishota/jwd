@@ -9,14 +9,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Territory {
 
-    private Queue<Cargo> queue = new PriorityQueue<>(Comparator.comparing(Cargo::isQuicklyPerishable).reversed());
-    private int capacityArea, occupyingArea = 0;
+    private Queue<Cargo> queue = new PriorityQueue<>(Comparator.comparing(Cargo::isPerishable).reversed());
+    private static final int CAPACITY_AREA =40;
+    private int occupyingArea = 0;
 
     private Lock locker;
     private Condition condition;
 
-    public Territory(int capacityArea) {
-        this.capacityArea = capacityArea;
+    public Territory() {
         locker = new ReentrantLock();
         condition = locker.newCondition();
     }
@@ -30,7 +30,7 @@ public class Territory {
                 condition.await();
             }
             getting = queue.poll();
-            occupyingArea-=getting.getType().takesSpace;
+            occupyingArea-=getting.getType().getTakesSpace();
             condition.signalAll();
 
         } finally {
@@ -39,15 +39,15 @@ public class Territory {
         return getting;
     }
 
-    public void put(Cargo putting) throws InterruptedException {
+    public void add(Cargo putting) throws InterruptedException {
 
         locker.lock();
         try {
-            while (occupyingArea+putting.getType().takesSpace> capacityArea)
+            while (occupyingArea+putting.getType().getTakesSpace()> CAPACITY_AREA)
                 condition.await();
 
             queue.add(putting);
-            occupyingArea+=putting.getType().takesSpace;
+            occupyingArea+=putting.getType().getTakesSpace();
             condition.signalAll();
         } finally {
             locker.unlock();

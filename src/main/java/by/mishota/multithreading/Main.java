@@ -1,36 +1,52 @@
 package by.mishota.multithreading;
 
-import by.mishota.multithreading.action.LogisticBase;
+import by.mishota.multithreading.entity.Base;
 import by.mishota.multithreading.entity.Cargo;
 import by.mishota.multithreading.entity.Terminal;
-import by.mishota.multithreading.entity.Territory;
-import by.mishota.multithreading.entity.TypeCargo;
+import by.mishota.multithreading.exception.ReadingException;
+import by.mishota.multithreading.factory.FactoryCargo;
+import by.mishota.multithreading.reader.CargoReader;
+import by.mishota.multithreading.reader.impl.CargoReaderFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-        int numberTerminals = 8;
-        Random random=new Random();
-        Territory territory = new Territory(45);
-        List<Terminal> terminals = new ArrayList<>();
-        ExecutorService executorService= Executors.newCachedThreadPool();
+    private static Logger logger = LogManager.getLogger();
 
-        for (int i = 0; i < numberTerminals; i++) {
-            terminals.add(new Terminal(territory));
+    public static void main(String[] args)  {
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Base base = Base.getInstance();
+        base.addTerminal(new Terminal());
+        base.addTerminal(new Terminal());
+        base.addTerminal(new Terminal());
+        base.addTerminal(new Terminal());
+        base.addTerminal(new Terminal());
+        base.addTerminal(new Terminal());
+
+        Path path = Path.of("file/cargoes.txt");
+        CargoReader reader = new CargoReaderFile();
+        List<String> reading = null;
+        List<Cargo> cargoes;
+
+        try {
+            reading = reader.read(path);
+        } catch (ReadingException e) {
+            logger.error("File isn't found");
         }
 
-        LogisticBase base=new LogisticBase(terminals,territory);
+        cargoes = FactoryCargo.createCargoes(reading);
 
-        for (int i = 0; i < 50; i++) {
-            Cargo cargo=new Cargo(TypeCargo.LORRY,random.nextBoolean(),base);
+        for (Cargo cargo:cargoes) {
             executorService.execute(cargo);
         }
+
 
     }
 

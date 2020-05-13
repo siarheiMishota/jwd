@@ -1,39 +1,55 @@
 package by.mishota.multithreading.entity;
 
-import by.mishota.multithreading.util.TerminalUtil;
+import by.mishota.multithreading.exception.TerminalException;
+import by.mishota.multithreading.util.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Terminal implements Runnable {
+public class Terminal {
 
     private static Logger logger = LogManager.getLogger();
+    private static Random random = new Random();
 
     private int id;
-    private Territory territory;
+    private boolean working;
 
-    public Terminal(Territory territory) {
-        this.territory = territory;
-        id = TerminalUtil.getId();
+    public Terminal() {
+        id = Util.getGenerateTerminalID();
     }
 
     public int getId() {
         return id;
     }
 
-    @Override
-    public void run() {
-        Cargo getting;
-
-        while (true) {
-            try {
-                getting = territory.get();
-                TimeUnit.SECONDS.sleep(getting.getType().takesSpace);
-            } catch (InterruptedException e) {
-                logger.warn("Getting a Car from the territory was interrupted");
-
-            }
-        }
+    public boolean isWorking() {
+        return working;
     }
+
+    public int load(Cargo cargo) {
+
+        logger.info(String.format("The Cargo(%4d,%b) is being loaded at terminal(%4d)", cargo.getId(), cargo.isPerishable(), id));
+        working = true;
+        int timeLoading = makeRandomIntValue();
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(timeLoading);
+        } catch (InterruptedException e) {
+            throw new TerminalException("The cargo wasn't loaded", e);
+        } finally {
+            working = false;
+        }
+
+        logger.info(String.format("The Cargo(%4d,%b) load was finished  at terminal(%4d)", cargo.getId(), cargo.isPerishable(), id));
+
+        return timeLoading;
+    }
+
+    private static int makeRandomIntValue() {
+        return random.nextInt(1000);
+    }
+
+
 }
