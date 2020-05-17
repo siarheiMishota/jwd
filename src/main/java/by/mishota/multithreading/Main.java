@@ -19,7 +19,7 @@ public class Main {
 
     private static Logger logger = LogManager.getLogger();
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         ExecutorService executorService = Executors.newCachedThreadPool();
         Base base = Base.getInstance();
@@ -27,27 +27,21 @@ public class Main {
         base.addTerminal(new Terminal());
         base.addTerminal(new Terminal());
         base.addTerminal(new Terminal());
-        base.addTerminal(new Terminal());
-        base.addTerminal(new Terminal());
 
-        Path path = Path.of("file/cargoes.txt");
+        Path path = Path.of("src/main/resources/file/cargoes.txt");
         CargoReader reader = new CargoReaderFile();
-        List<String> reading = null;
+        List<String> reading;
         List<Cargo> cargoes;
 
         try {
             reading = reader.read(path);
+            cargoes = FactoryCargo.createCargoes(reading);
+
+            for (Cargo cargo : cargoes) {
+                executorService.execute(cargo);
+            }
         } catch (ReadingException e) {
             logger.error("File isn't found");
         }
-
-        cargoes = FactoryCargo.createCargoes(reading);
-
-        for (Cargo cargo:cargoes) {
-            executorService.execute(cargo);
-        }
-
-
     }
-
 }

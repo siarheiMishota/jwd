@@ -32,22 +32,22 @@ public class Cargo implements Runnable {
 
     @Override
     public void run() {
-        Base base=Base.getInstance();
-        Terminal terminal;
+        Base base = Base.getInstance();
+        Terminal terminal = null;
 
         try {
-            logger.info(String.format("Cargo (%4d) waiting for terminal"));
-            terminal=base.getTerminal(this);
+            logger.info(String.format("Cargo (%4d, %b ) waiting for terminal", id, perishable));
 
-            logger.info(String.format("Cargo (%4d) got a terminal"));
+            terminal = base.getTerminal(this);
+            logger.info(String.format("Cargo ( %4d, %b ) got a terminal (%4d)", id, perishable, terminal.getId()));
 
             terminal.load(this);
 
-            logger.info(String.format("Cargo (%4d) got a terminal"));
-
-
         } catch (InterruptedException e) {
-            logger.warn("Exception ");
+            logger.warn(String.format("Exception load or unload cargo(%4d, %b) in terminal(%d)", id, perishable, terminal.getId()));
+        } finally {
+            base.releaseTerminal();
+            logger.info(String.format("Terminal(%d) was realised",terminal.getId()));
         }
     }
 }

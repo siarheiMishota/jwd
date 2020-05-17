@@ -31,11 +31,10 @@ public class Terminal {
     public int load(Cargo cargo) {
 
         logger.info(String.format("The Cargo(%4d,%b) is being loaded at terminal(%4d)", cargo.getId(), cargo.isPerishable(), id));
-        working = true;
         int timeLoading = makeRandomIntValue();
 
         try {
-            TimeUnit.MILLISECONDS.sleep(timeLoading);
+            TimeUnit.SECONDS.sleep(timeLoading);
         } catch (InterruptedException e) {
             throw new TerminalException("The cargo wasn't loaded", e);
         } finally {
@@ -48,8 +47,10 @@ public class Terminal {
     }
 
     private static int makeRandomIntValue() {
-        return random.nextInt(1000);
+        return random.nextInt(5);
     }
 
-
+    public void setWorking(boolean working) {
+        this.working = working;
+    }
 }

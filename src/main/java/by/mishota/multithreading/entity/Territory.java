@@ -1,26 +1,38 @@
 package by.mishota.multithreading.entity;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Territory {
 
+    private static Logger logger = LogManager.getLogger();
+
     private Queue<Cargo> queue = new PriorityQueue<>(Comparator.comparing(Cargo::isPerishable).reversed());
-    private static final int CAPACITY_AREA =40;
+    private static final int CAPACITY_AREA = 100;
     private int occupyingArea = 0;
 
     private Lock locker;
     private Condition condition;
+    private boolean full;
 
-    public Territory() {
-        locker = new ReentrantLock();
-        condition = locker.newCondition();
+    public boolean isFull() {
+        return full;
     }
 
+    public Cargo getHead() {
+        return queue.peek();
+    }
+
+    public Territory(Lock locker) {
+        this.locker = locker;
+        condition = locker.newCondition();
+    }
 
     public Cargo get() throws InterruptedException {
         Cargo getting;
@@ -30,9 +42,8 @@ public class Territory {
                 condition.await();
             }
             getting = queue.poll();
-            occupyingArea-=getting.getType().getTakesSpace();
+            occupyingArea -= getting.getType().getTakesSpace();
             condition.signalAll();
-
         } finally {
             locker.unlock();
         }
@@ -43,11 +54,12 @@ public class Territory {
 
         locker.lock();
         try {
-            while (occupyingArea+putting.getType().getTakesSpace()> CAPACITY_AREA)
+            while (occupyingArea + putting.getType().getTakesSpace() > CAPACITY_AREA)
                 condition.await();
 
             queue.add(putting);
-            occupyingArea+=putting.getType().getTakesSpace();
+            logger.info(String.format("Car(%d) is added to queue", putting.getId()));
+            occupyingArea += putting.getType().getTakesSpace();
             condition.signalAll();
         } finally {
             locker.unlock();
