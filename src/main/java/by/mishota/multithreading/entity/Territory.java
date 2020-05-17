@@ -14,18 +14,13 @@ public class Territory {
     private static Logger logger = LogManager.getLogger();
 
     private Queue<Cargo> queue = new PriorityQueue<>(Comparator.comparing(Cargo::isPerishable).reversed());
-    private static final int CAPACITY_AREA = 100;
+    private static final int CAPACITY_AREA = 40;
     private int occupyingArea = 0;
 
     private Lock locker;
     private Condition condition;
-    private boolean full;
 
-    public boolean isFull() {
-        return full;
-    }
-
-    public Cargo getHead() {
+    public Cargo peekHead() {
         return queue.peek();
     }
 
@@ -34,7 +29,7 @@ public class Territory {
         condition = locker.newCondition();
     }
 
-    public Cargo get() throws InterruptedException {
+    public Cargo poll() throws InterruptedException {
         Cargo getting;
         locker.lock();
         try {

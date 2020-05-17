@@ -52,7 +52,7 @@ public class Base {
             locker.lock();
 
             while (true) {
-                Cargo head = territory.getHead();
+                Cargo head = territory.peekHead();
 
                 if (head.equals(cargo)) {
                     Optional<Terminal> optional = terminals.stream().filter(o -> !o.isWorking()).findAny();
@@ -64,7 +64,7 @@ public class Base {
 
                     terminal = optional.get();
                     terminal.setWorking(true);
-                    territory.get();
+                    territory.poll();
                     break;
 
                 } else {
