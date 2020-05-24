@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.com/postcards"
+        xmlns:tns="http://www.example.com/postcards"
+        elementFormDefault="qualified">
+    <element name="postcards">
+        <complexType>
+            <sequence>
+                <element name="postcard" type="tns:Postcard" minOccurs="16" maxOccurs="unbounded"/>
+
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="Postcard">
+        <sequence>
+            <element name="type" type="tns:Type" default="ORDINARY"/>
+            <element name="country" type="string"/>
+            <element name="year" type="tns:Year"/>
+            <element name="valuable" type="tns:Valuable" default="THEMATIC"/>
+            <element name="authors" type="tns:Authors" default="author unknown"/>
+        </sequence>
+        <attribute name="id" type="tns:ID" use="required"/>
+        <attribute name="theme" type="tns:Theme" use="optional" default="ANIMAL"/>
+    </complexType>
+
+    <simpleType name="Type">
+        <restriction base="string">
+            <enumeration value="GREETING"/>
+            <enumeration value="PROMOTIONAL"/>
+            <enumeration value="ORDINARY"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="ID">
+        <restriction base="int"/>
+    </simpleType>
+
+    <simpleType name="Valuable">
+        <restriction base="string">
+            <enumeration value="HISTORICAL"/>
+            <enumeration value="COLLECTIBLE"/>
+            <enumeration value="THEMATIC"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="Theme">
+        <restriction base="string">
+            <enumeration value="CITY"/>
+            <enumeration value="NATURE"/>
+            <enumeration value="PEOPLE"/>
+            <enumeration value="RELIGIOUS"/>
+            <enumeration value="SPORT"/>
+            <enumeration value="ARCHITECTURE"/>
+            <enumeration value="ANIMAL"/>
+            <enumeration value="SHIP"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="Year">
+        <restriction base="gYear">
+            <maxInclusive value="2020"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="Authors">
+        <sequence>
+            <element name="author" type="string" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+</schema>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<postcards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.example.com/postcards"
+           xsi:schemaLocation="http://www.example.com/postcards  postcards.xsd">
+    <postcard id="b1" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country>Poland</country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+    <postcard id="b2" theme="NATURE">
+        <type>ORDINARY</type>
+        <country></country>
+        <year>2010</year>
+        <valuable></valuable>
+        <authors>
+            <author>Петров</author>
+            <author>Иванов</author>
+        </authors>
+    </postcard>
+    <postcard id="b3" theme="CITY">
+        <type>GREETING</type>
+        <country></country>
+        <year>2000</year>
+        <valuable></valuable>
+        <authors>
+            <author>Чумаков</author>
+        </authors>
+    </postcard>
+
+</postcards>

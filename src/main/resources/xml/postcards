@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<postcards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.example.com/postcards"
+           xsi:schemaLocation="http://www.example.com/postcards  postcards.xsd">
+    <postcard id="b1" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country>asdasd</country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+    <postcard id="b2" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b3" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b4" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b5" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b6" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b7" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b8" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b9" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b10" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b11" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b12" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b13" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b14" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b15" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+    <postcard id="b16" theme="ARCHITECTURE">
+        <type>PROMOTIONAL</type>
+        <country></country>
+        <year>2020</year>
+        <valuable></valuable>
+        <authors>
+            <author>Сидоров</author>
+            <author>Козлов</author>
+        </authors>
+    </postcard>
+
+</postcards>
